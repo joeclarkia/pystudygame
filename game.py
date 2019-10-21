@@ -18,6 +18,9 @@ NC="\033[0m"
 help_list = []
 wrong_list = []
 
+start_time = None
+questions_answered = 0
+
 def read_file():
    global data
    lines = open('states.dat').readlines()
@@ -54,9 +57,27 @@ def print_list(alist, astr):
         print " * %s" % item
     print ""
 
+def quit():
+    print ""
+    print_list(help_list, "%sYou asked for help with these%s" % (YELLOW, NC))
+    print_list(wrong_list, "%sYou got these wrong%s" % (RED, NC))
+    print ""
+    score()
+    print ""
+    tdiff = time.time() - start_time
+    if questions_answered > 0:
+       tpq = "%.1f" % (tdiff / questions_answered)
+    else:
+       tpq = "N/A"
+    print "Elapsed time: %.0f sec (%s sec / question)" % (tdiff, tpq)
+    print "Bye!"
+    sys.exit(0)
+
 def main():
    global right
    global wrong
+   global start_time
+   global questions_answered
 
    read_file()
 
@@ -69,6 +90,8 @@ def main():
    random.shuffle(questions_to_ask)
 
    print questions_to_ask
+
+   start_time = time.time()
 
    while len(questions_to_ask) > 0:
       score()
@@ -86,6 +109,7 @@ def main():
           answer = data[q][0]
 
       while True:    
+          print "Elapsed time: %.0f sec" % (time.time() - start_time)
           resp = raw_input(astr)
           if resp == answer:
               print "%s* * * * Correct * * * *%s" % (GREEN, NC)
@@ -95,20 +119,16 @@ def main():
               print "%sAnswer: %s%s" % (YELLOW, answer, NC)
               help_list.append("%s : %s" % (astr, answer))
           elif resp == "q":
-              print ""
-              print_list(help_list, "%sYou asked for help with these%s" % (YELLOW, NC))
-              print_list(wrong_list, "%sYou got these wrong%s" % (RED, NC))
-              print ""
-              score()
-              print ""
-              print "Bye!"
-              sys.exit(0)
+              quit()
           else:
               wrong = wrong + 1
               wrong_list.append("%s : %s" % (astr, answer))
               print "%s! ! ! ! NOPE ! ! ! !%s" % (RED, NC)
 
+      questions_answered = questions_answered + 1
       time.sleep(0.25)
+
+   quit()
 
 if __name__ == "__main__":
     main()
