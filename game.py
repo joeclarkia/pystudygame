@@ -21,9 +21,9 @@ wrong_list = []
 start_time = None
 questions_answered = 0
 
-def read_file():
+def read_file(filename):
    global data
-   lines = open('states.dat').readlines()
+   lines = open(filename).readlines()
 
    for line in lines:
 
@@ -79,7 +79,13 @@ def main():
    global start_time
    global questions_answered
 
-   read_file()
+   filename = 'states.dat'
+   if len(sys.argv) == 2:
+       filename = sys.argv[1]
+
+   print " * Loading filename %s" % filename
+
+   read_file(filename)
 
    print " ** Answer each question.  Use '?' if you give up, q to quit **"
 

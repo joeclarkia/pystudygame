@@ -23,7 +23,7 @@ questions_answered = 0
 
 if len(sys.argv) < 3:
     print "Usage: python game_m.py ACTION NUMBERS"
-    print "   ACTION is one of + or -"
+    print "   ACTION is one of + - x /"
     print "   NUMBERS is a space-separated string of numbers to practice"
     sys.exit(1)
 
@@ -33,7 +33,7 @@ numbers = sys.argv[2:]
 def gen_data():
     for i in numbers:
         val = int(i)
-        for j in range(val):
+        for j in range(val+1):
             if action == "+":
                 question = "%s + %s" % (j, val-j)
                 answer = "%s" % val
@@ -41,6 +41,14 @@ def gen_data():
             elif action == "-":
                 question = "%s - %s" % (val, j)
                 answer = "%s" % (val - j)
+                data.append([question, answer])
+            elif action == "x":
+                question = "%s * %s" % (val, j)
+                answer = "%s" % (val * j)
+                data.append([question, answer])
+            elif action == "/":
+                question = "%s / %s" % (val*j, val)
+                answer = "%s" % (val*j / val)
                 data.append([question, answer])
             else:
                 print "Unknown action '%s'" % action
