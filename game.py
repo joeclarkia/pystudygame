@@ -99,6 +99,12 @@ def main():
    global questions_answered
    global states
 
+   if len(sys.argv) > 1 and sys.argv[1] == "-h":
+       print "Usage: python game.py [INITIALS]"
+       print "   INITIALS: a space-separated list of states to study, e.g., IL IN MS"
+       print "     if no initials are given, then all 50 states will be studied."
+       sys.exit(0)
+
    filename = 'states.dat'
    if len(sys.argv) > 1:
        states = sys.argv[1:]
