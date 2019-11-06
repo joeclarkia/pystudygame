@@ -55,9 +55,8 @@ def read_file(filename):
               pass
 
    if states is not None and len(states) is not 0:
-       print " * Warning: the following states were not found: %s" % (states)
-       time.sleep(3)
-
+       print "%s * Warning: the following states were not found: %s%s" % (RED, states, NC)
+       sys.exit(1)
 
 def score():
    if right+wrong == 0:
