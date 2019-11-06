@@ -131,7 +131,7 @@ def main():
               quit()
           else:
               wrong = wrong + 1
-              wrong_list.append("%s : %s" % (astr, answer))
+              wrong_list.append("%s : '%s' (You said %s'%s')%s" % (astr, answer, YELLOW, resp, NC))
               print "%s! ! ! ! NOPE ! ! ! !%s" % (RED, NC)
 
       questions_answered = questions_answered + 1
