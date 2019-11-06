@@ -21,8 +21,11 @@ wrong_list = []
 start_time = None
 questions_answered = 0
 
+states = None
+
 def read_file(filename):
    global data
+   global states
    lines = open(filename).readlines()
 
    for line in lines:
@@ -32,13 +35,29 @@ def read_file(filename):
 
       parts = line.split(',')
 
-      if len(parts) != 2:
+      # capital, state, initials
+      if len(parts) != 3:
           continue
 
+      parts[0] = parts[0].strip()
       parts[1] = parts[1].strip()
+      parts[2] = parts[2].strip()
 
-   
-      data.append(parts)
+      if states is None:
+          data.append(parts)
+      else:
+          try:
+              ind = states.index(parts[2])
+              data.append(parts)
+              del states[ind]
+
+          except ValueError:
+              pass
+
+   if states is not None and len(states) is not 0:
+       print " * Warning: the following states were not found: %s" % (states)
+       time.sleep(3)
+
 
 def score():
    if right+wrong == 0:
@@ -78,12 +97,17 @@ def main():
    global wrong
    global start_time
    global questions_answered
+   global states
 
    filename = 'states.dat'
-   if len(sys.argv) == 2:
-       filename = sys.argv[1]
+   if len(sys.argv) > 1:
+       states = sys.argv[1:]
 
    print " * Loading filename %s" % filename
+   if states is not None:
+       print " * Using states %s" % states
+   else:
+       print " * Using all states"
 
    read_file(filename)
 
@@ -122,7 +146,7 @@ def main():
               right = right + 1
               break
           elif resp == "?":
-              print "%sAnswer: %s%s" % (YELLOW, answer, NC)
+              print "%sAnswer: '%s'%s" % (YELLOW, answer, NC)
               help_list.append("%s : %s" % (astr, answer))
           elif resp == "q":
               quit()
