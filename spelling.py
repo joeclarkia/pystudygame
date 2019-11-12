@@ -2,6 +2,9 @@ import os
 import time
 import random
 import sys
+import pyttsx3
+import threading
+
 
 data = []
 
@@ -21,38 +24,39 @@ wrong_list = []
 start_time = None
 questions_answered = 0
 
-if len(sys.argv) < 3:
-    print("Usage: python game_m.py ACTION NUMBERS")
-    print("   ACTION is one of + - x /")
-    print("   NUMBERS is a space-separated string of numbers to practice")
-    sys.exit(1)
+def Sayer(astr):
+    print("Loading speech module...")
+    speaker = pyttsx3.init()
+    print("Speech module loaded!")
+    speaker.say(astr)
+    speaker.runAndWait()
 
-action = sys.argv[1]
-numbers = sys.argv[2:]
+def joeSay(astr):
+    t = threading.Thread(target=Sayer, args=[astr])
+    t.start()
 
-def gen_data():
-    for i in numbers:
-        val = int(i)
-        for j in range(val+1):
-            if action == "+":
-                question = "%s + %s" % (j, val-j)
-                answer = "%s" % val
-                data.append([question, answer])
-            elif action == "-":
-                question = "%s - %s" % (val, j)
-                answer = "%s" % (val - j)
-                data.append([question, answer])
-            elif action == "x":
-                question = "%s * %s" % (val, j)
-                answer = "%s" % (val * j)
-                data.append([question, answer])
-            elif action == "/":
-                question = "%s / %s" % (val*j, val)
-                answer = "%s" % (val*j / val)
-                data.append([question, answer])
-            else:
-                print("Unknown action '%s'" % action)
-                sys.exit(1)
+def read_file(filename):
+   global data
+   lines = open(filename).readlines()
+
+   for line in lines:
+
+      if line is "END":
+         break
+
+      parts = line.split(',')
+
+      # word to spell is only valid column
+      if len(parts) < 1:
+          continue
+
+      parts[0] = parts[0].strip()
+
+      try:
+          data.append(parts[0])
+
+      except ValueError:
+          pass
 
 def score():
    if right+wrong == 0:
@@ -92,8 +96,20 @@ def main():
    global wrong
    global start_time
    global questions_answered
+   global states
 
-   gen_data()
+   if len(sys.argv) > 1 and sys.argv[1] == "-h":
+       print("Usage: python game.py [INITIALS]")
+       print("   INITIALS: a space-separated list of states to study, e.g., IL IN MS")
+       print("     if no initials are given, then all 50 states will be studied.")
+       sys.exit(0)
+
+   filename = 'states.dat'
+   if len(sys.argv) > 1:
+       filename = sys.argv[1]
+
+   print(" * Loading filename %s" % filename)
+   read_file(filename)
 
    print(" ** Answer each question.  Use '?' if you give up, q to quit **")
 
@@ -112,26 +128,39 @@ def main():
 
       print(" %s questions to go" % (len(questions_to_ask)))
 
-      q = questions_to_ask.pop(0)
+      x = questions_to_ask.pop(0)
       
-      astr = "%s%s = ____ >%s " % (BLUE, data[q][0], NC)
-      answer = data[q][1]
+      answer = data[x]
+
+      joeSay("Spell the word %s" % (answer))
 
       while True:    
           print("Elapsed time: %.0f sec" % (time.time() - start_time))
-          resp = input(astr)
+
+          # Python < 3
+          #resp = raw_input(astr)
+
+          resp = input("> ")
           if resp == answer:
               print("%s* * * * Correct * * * *%s" % (GREEN, NC))
+              #joeSay("You got it right!")
               right = right + 1
               break
+          elif resp == "h":
+              print(" . : repeat the word to spell")
+              print(" ? : I give up, give me the answer")
+              print(" q : quit")
+          elif resp == ".":
+              joeSay("Spell the word %s" % (answer))
           elif resp == "?":
-              print("%sAnswer: %s%s" % (YELLOW, answer, NC))
-              help_list.append("%s : %s" % (astr, answer))
+              print("%sAnswer: '%s'%s" % (YELLOW, answer, NC))
+              help_list.append("%s : %s" % (resp, answer))
           elif resp == "q":
               quit()
           else:
               wrong = wrong + 1
-              wrong_list.append("%s : '%s' (You said %s'%s')%s" % (astr, answer, YELLOW, resp, NC))
+              wrong_list.append("%s : '%s' (You said %s'%s'%s)" % (resp, answer, YELLOW, resp, NC))
+              #joeSay("No that's not quite right, Try again")
               print("%s! ! ! ! NOPE ! ! ! !%s" % (RED, NC))
 
       questions_answered = questions_answered + 1
@@ -141,6 +170,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
 
