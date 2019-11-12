@@ -25,11 +25,12 @@ start_time = None
 questions_answered = 0
 
 def Sayer(astr):
-    print("Loading speech module...")
     speaker = pyttsx3.init()
-    print("Speech module loaded!")
     speaker.say(astr)
-    speaker.runAndWait()
+    try:
+        speaker.runAndWait()
+    except RuntimeError as re:
+        print("%sError trying to play sound, try command again%s" % (RED, NC))
 
 def joeSay(astr):
     t = threading.Thread(target=Sayer, args=[astr])
@@ -40,10 +41,6 @@ def read_file(filename):
    lines = open(filename).readlines()
 
    for line in lines:
-
-      if line is "END":
-         break
-
       parts = line.split(',')
 
       # word to spell is only valid column
@@ -51,9 +48,11 @@ def read_file(filename):
           continue
 
       parts[0] = parts[0].strip()
+      if len(parts) > 1:
+          parts[1] = parts[1].strip()
 
       try:
-          data.append(parts[0])
+          data.append(parts)
 
       except ValueError:
           pass
@@ -104,9 +103,10 @@ def main():
        print("     if no initials are given, then all 50 states will be studied.")
        sys.exit(0)
 
-   filename = 'states.dat'
-   if len(sys.argv) > 1:
-       filename = sys.argv[1]
+   if len(sys.argv) < 2:
+       print("%sMust specify spelling list filename%s" % (RED, NC))
+       sys.exit(1)
+   filename = sys.argv[1]
 
    print(" * Loading filename %s" % filename)
    read_file(filename)
@@ -129,8 +129,13 @@ def main():
       print(" %s questions to go" % (len(questions_to_ask)))
 
       x = questions_to_ask.pop(0)
+
+      item = data[x]
       
-      answer = data[x]
+      answer = item[0]
+      sentence = None
+      if len(item) > 1:
+          sentence = item[1]
 
       joeSay("Spell the word %s" % (answer))
 
@@ -140,16 +145,23 @@ def main():
           # Python < 3
           #resp = raw_input(astr)
 
-          resp = input("> ")
+          resp = input(" (h for help) > %s" % (BLUE))
+          print("%s" % (NC)),
+
           if resp == answer:
               print("%s* * * * Correct * * * *%s" % (GREEN, NC))
-              #joeSay("You got it right!")
               right = right + 1
               break
           elif resp == "h":
               print(" . : repeat the word to spell")
+              print(" s : say the word in a sentence")
               print(" ? : I give up, give me the answer")
               print(" q : quit")
+          elif resp == "s":
+              if sentence:
+                  joeSay(sentence)
+              else:
+                  print("%sNo sentence provided%s" % (YELLOW, NC))
           elif resp == ".":
               joeSay("Spell the word %s" % (answer))
           elif resp == "?":
@@ -160,7 +172,6 @@ def main():
           else:
               wrong = wrong + 1
               wrong_list.append("%s : '%s' (You said %s'%s'%s)" % (resp, answer, YELLOW, resp, NC))
-              #joeSay("No that's not quite right, Try again")
               print("%s! ! ! ! NOPE ! ! ! !%s" % (RED, NC))
 
       questions_answered = questions_answered + 1
