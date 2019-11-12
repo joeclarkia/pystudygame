@@ -55,14 +55,14 @@ def read_file(filename):
               pass
 
    if states is not None and len(states) is not 0:
-       print "%s * Warning: the following states were not found: %s%s" % (RED, states, NC)
+       print("%s * Warning: the following states were not found: %s%s" % (RED, states, NC))
        sys.exit(1)
 
 def score():
    if right+wrong == 0:
        return
    else:
-       print "Score: %s / %s (%.2f %%)" % (right, right+wrong, 100*right*1.0/(right+wrong))
+       print("Score: %s / %s (%.2f %%)" % (right, right+wrong, 100*right*1.0/(right+wrong)))
 
 def print_list(alist, astr):
     if len(alist) == 0:
@@ -72,23 +72,23 @@ def print_list(alist, astr):
     print("%s:" % astr)
     print("-----------------------------------------------")
     for item in alist:
-        print " * %s" % item
-    print ""
+        print(" * %s" % item)
+    print("")
 
 def quit():
-    print ""
+    print("")
     print_list(help_list, "%sYou asked for help with these%s" % (YELLOW, NC))
     print_list(wrong_list, "%sYou got these wrong%s" % (RED, NC))
-    print ""
+    print("")
     score()
-    print ""
+    print("")
     tdiff = time.time() - start_time
     if questions_answered > 0:
        tpq = "%.1f" % (tdiff / questions_answered)
     else:
        tpq = "N/A"
-    print "Elapsed time: %.0f sec (%s sec / question)" % (tdiff, tpq)
-    print "Bye!"
+    print("Elapsed time: %.0f sec (%s sec / question)" % (tdiff, tpq))
+    print("Bye!")
     sys.exit(0)
 
 def main():
@@ -99,24 +99,24 @@ def main():
    global states
 
    if len(sys.argv) > 1 and sys.argv[1] == "-h":
-       print "Usage: python game.py [INITIALS]"
-       print "   INITIALS: a space-separated list of states to study, e.g., IL IN MS"
-       print "     if no initials are given, then all 50 states will be studied."
+       print("Usage: python game.py [INITIALS]")
+       print("   INITIALS: a space-separated list of states to study, e.g., IL IN MS")
+       print("     if no initials are given, then all 50 states will be studied.")
        sys.exit(0)
 
    filename = 'states.dat'
    if len(sys.argv) > 1:
        states = sys.argv[1:]
 
-   print " * Loading filename %s" % filename
+   print(" * Loading filename %s" % filename)
    if states is not None:
-       print " * Using states %s" % states
+       print(" * Using states %s" % states)
    else:
-       print " * Using all states"
+       print(" * Using all states")
 
    read_file(filename)
 
-   print " ** Answer each question.  Use '?' if you give up, q to quit **"
+   print(" ** Answer each question.  Use '?' if you give up, q to quit **")
 
    questions_to_ask = []
    for i in range(len(data)*2):
@@ -124,14 +124,14 @@ def main():
 
    random.shuffle(questions_to_ask)
 
-   print questions_to_ask
+   print(questions_to_ask)
 
    start_time = time.time()
 
    while len(questions_to_ask) > 0:
       score()
 
-      print " %s questions to go" % (len(questions_to_ask))
+      print(" %s questions to go" % (len(questions_to_ask)))
 
       x = questions_to_ask.pop(0)
       q = int(x/2)
@@ -144,21 +144,25 @@ def main():
           answer = data[q][0]
 
       while True:    
-          print "Elapsed time: %.0f sec" % (time.time() - start_time)
-          resp = raw_input(astr)
+          print("Elapsed time: %.0f sec" % (time.time() - start_time))
+
+          # Python < 3
+          #resp = raw_input(astr)
+
+          resp = input(astr)
           if resp == answer:
-              print "%s* * * * Correct * * * *%s" % (GREEN, NC)
+              print("%s* * * * Correct * * * *%s" % (GREEN, NC))
               right = right + 1
               break
           elif resp == "?":
-              print "%sAnswer: '%s'%s" % (YELLOW, answer, NC)
+              print("%sAnswer: '%s'%s" % (YELLOW, answer, NC))
               help_list.append("%s : %s" % (astr, answer))
           elif resp == "q":
               quit()
           else:
               wrong = wrong + 1
               wrong_list.append("%s : '%s' (You said %s'%s'%s)" % (astr, answer, YELLOW, resp, NC))
-              print "%s! ! ! ! NOPE ! ! ! !%s" % (RED, NC)
+              print("%s! ! ! ! NOPE ! ! ! !%s" % (RED, NC))
 
       questions_answered = questions_answered + 1
       time.sleep(0.25)
