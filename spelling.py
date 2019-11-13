@@ -5,6 +5,9 @@ import sys
 import pyttsx3
 import threading
 
+if "TERM" not in os.environ:
+    import colorama
+    colorama.init()
 
 data = []
 

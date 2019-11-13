@@ -3,6 +3,10 @@ import time
 import random
 import sys
 
+if "TERM" not in os.environ:
+    import colorama
+    colorama.init(convert=True)
+
 data = []
 
 right = 0
@@ -30,7 +34,7 @@ def read_file(filename):
 
    for line in lines:
 
-      if line is "END":
+      if line == "END":
          break
 
       parts = line.split(',')
@@ -54,7 +58,7 @@ def read_file(filename):
           except ValueError:
               pass
 
-   if states is not None and len(states) is not 0:
+   if states != None and len(states) != 0:
        print("%s * Warning: the following states were not found: %s%s" % (RED, states, NC))
        sys.exit(1)
 
@@ -146,10 +150,8 @@ def main():
       while True:    
           print("Elapsed time: %.0f sec" % (time.time() - start_time))
 
-          # Python < 3
-          #resp = raw_input(astr)
-
-          resp = input(astr)
+          print(astr, end='')
+          resp = input()
           if resp == answer:
               print("%s* * * * Correct * * * *%s" % (GREEN, NC))
               right = right + 1

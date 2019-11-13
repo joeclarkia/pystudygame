@@ -10,32 +10,50 @@ Each game keeps track of the student's progress, and prints out the questions th
 ## Prerequisites ##
 ### Python ###
 
-pystudygame, if you didn't guess by the name, is a set of Python scripts.  You will need to install Python on your computer to use this game.  For Ubuntu Linux, python is probably already installed.  On Windows, download Python from the following site:
+pystudygame, if you didn't guess by the name, is a set of Python scripts.  You will need to install Python on your computer to use this game.  For Ubuntu Linux, python is probably already installed.  On Windows, download the Python installer from the following site:
 
  https://www.python.org/downloads/windows/
 
 I recommend using the most recent version (3.8).
 
-Once you have downloaded and installed Python, do this to test it:
+**When you get to the Python main install screen, MAKE SURE you select the option to add Python to the PATH environment variable.  You *WILL* have issues later in these instructions if you don't select this option.**
+
+Once you have installed Python, do this to test it:
 * Start Menu
 * Type "Cmd"
 * At the command prompt, type "python"
 You should see a couple of lines of text followed by ">>>".
 * Type "quit()" to exit.
-* If you DON'T see the ">>>", Python may not have been installed correctly.
+* If you DON'T see the ">>>", there are a few possible causes:
+   * If you see "command not found" or similar, Python was probably not added to the PATH environment variable. Run the installer again and say Modify and look for the option to add Python to system environment variables.
+   * If you see an error about a DLL not being found, you might need to install the Visual C++ redistributable from here: https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads
+
+###  pip ###
+Ensure that the tool "pip" is installed with this command:
+
+    py -3 -m ensurepip
 
 ### pyttsx3 (for text-to-speech spelling) ###
-pyttsx3 is a text-to-speech library for Python. Again in a command prompt, type the following. It should run through some steps and in the end say that pyttsx3 was successfully installed.
+Install with this command:
 
     python -m pip install pyttsx3
 
+It should end with a message about pyttsx3 being successfully installed.
+
+### colorama (for colorized output) ###
+Install with this command:
+
+    python -m pip install colorama
+
+It should end with a message about colorama being successfully installed.
+
 ## Installing the Scripts ##
 When you have the prerequisites satisfied:
-* click the "Clone or Download" link
+* click the "Clone or Download" link on this page.
 * click "Download ZIP"
 * Save the file to your computer
-* Go to the download folder on your computer
-* Unzip the file pystudygame-master.zip file.
+* Go to the folder on your computer where the zip file was downloaded.
+* Unzip the file pystudygame-master.zip.
 
 ## Running the Scripts ##
 Open a Command Prompt:
@@ -45,7 +63,7 @@ Open a Command Prompt:
 * Once in the Command Prompt, navigate to the directory of the unzipped pystudygame.
 * Run the game! Use the examples below as a guideline of what to type.
 
-## States & Capitals ##
+### States & Capitals ###
 The states game (states.py) uses the provided states.dat file to ask the student questions of two forms:
 
 * What is the capital of STATE?
@@ -57,14 +75,14 @@ Example usage:
 
     python states.py IA MN FL GA
 
-## Math ##
+### Math ###
 The math game (math.py) sets up a set of questions to ask to study math families.  The user specifies an operation to study (+, -, x, or /) and the numbers families to study.
 
 Example usage:
 
     python math.py + 1 2 3 9 10
 
-## Spelling ##
+### Spelling ###
 
 The spelling game (spelling.py) uses a text-to-speech engine to ask the student to spell words from a specified data file.  The format of the data file is lines of the following format:
 
@@ -75,9 +93,3 @@ The voice will direct the student to spell the word.  The sentence can be spoken
 Example usage:
 
     python spelling.py spelling-11.dat
-
-Dependency: pyttsx3 (https://pypi.org/project/pyttsx3/)
-    python -m pip install pyttsx3
-
-If you run into problems installing pyttsx3 software, feel free to create a GitHub issue and request help -- I will aim to improve this documentation based on the feedback I receive.
-

@@ -3,6 +3,10 @@ import time
 import random
 import sys
 
+if "TERM" not in os.environ:
+    import colorama
+    colorama.init()
+
 data = []
 
 right = 0
