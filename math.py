@@ -123,7 +123,8 @@ def main():
 
       while True:    
           print("Elapsed time: %.0f sec" % (time.time() - start_time))
-          resp = input(astr)
+          print(astr, end='')
+          resp = input()
           if resp == answer:
               print("%s* * * * Correct * * * *%s" % (GREEN, NC))
               right = right + 1

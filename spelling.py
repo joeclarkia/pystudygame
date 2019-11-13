@@ -145,10 +145,9 @@ def main():
       while True:    
           print("Elapsed time: %.0f sec" % (time.time() - start_time))
 
-          # Python < 3
-          #resp = raw_input(astr)
+          print("(h for help) > %s" % (BLUE), end='')
+          resp = input()
 
-          resp = input(" (h for help) > %s" % (BLUE))
           print("%s" % (NC)),
 
           if resp == answer:
