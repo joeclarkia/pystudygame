@@ -3,9 +3,47 @@ Our kids are in 2nd grade and 4th grade, and at that level there are lots of fac
 
 I came up with three scripts that we've used to help the kids practice their school topics.  Surprisingly, they've seemed to enjoy it, even though it's just a command-line program (no pretty pictures, sorry).
 
-PS: I call this a "game", because I think of it as a game, but hopefully a fun and memory-building game!
+I call this a "game", because I think of it as a game, but hopefully a fun and memory-building game!
 
 Each game keeps track of the student's progress, and prints out the questions that the student asked for help with or got wrong.
+
+## Prerequisites ##
+### Python ###
+
+pystudygame, if you didn't guess by the name, is a set of Python scripts.  You will need to install Python on your computer to use this game.  For Ubuntu Linux, python is probably already installed.  On Windows, download Python from the following site:
+
+ https://www.python.org/downloads/windows/
+
+I recommend using the most recent version (3.8).
+
+Once you have downloaded and installed Python, do this to test it:
+* Start Menu
+* Type "Cmd"
+* At the command prompt, type "python"
+You should see a couple of lines of text followed by ">>>".
+* Type "quit()" to exit.
+* If you DON'T see the ">>>", Python may not have been installed correctly.
+
+### pyttsx3 (for text-to-speech spelling) ###
+pyttsx3 is a text-to-speech library for Python. Again in a command prompt, type the following. It should run through some steps and in the end say that pyttsx3 was successfully installed.
+
+    python -m pip install pyttsx3
+
+## Installing the Scripts ##
+When you have the prerequisites satisfied:
+* click the "Clone or Download" link
+* click "Download ZIP"
+* Save the file to your computer
+* Go to the download folder on your computer
+* Unzip the file pystudygame-master.zip file.
+
+## Running the Scripts ##
+Open a Command Prompt:
+* Start Menu
+* Type "cmd"
+* Open the Command Prompt
+* Once in the Command Prompt, navigate to the directory of the unzipped pystudygame.
+* Run the game! Use the examples below as a guideline of what to type.
 
 ## States & Capitals ##
 The states game (states.py) uses the provided states.dat file to ask the student questions of two forms:
