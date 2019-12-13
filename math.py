@@ -119,25 +119,37 @@ def main():
       q = questions_to_ask.pop(0)
       
       astr = "%s%s = ____ >%s " % (BLUE, data[q][0], NC)
-      answer = data[q][1]
+      answer = float(data[q][1])
 
       while True:    
           print("Elapsed time: %.0f sec" % (time.time() - start_time))
           print(astr, end='')
           resp = input()
-          if resp == answer:
-              print("%s* * * * Correct * * * *%s" % (GREEN, NC))
-              right = right + 1
-              break
-          elif resp == "?":
+           
+          if resp == "?":
               print("%sAnswer: %s%s" % (YELLOW, answer, NC))
               help_list.append("%s : %s" % (astr, answer))
           elif resp == "q":
               quit()
           else:
-              wrong = wrong + 1
-              wrong_list.append("%s : '%s' (You said %s'%s')%s" % (astr, answer, YELLOW, resp, NC))
-              print("%s! ! ! ! NOPE ! ! ! !%s" % (RED, NC))
+              wrong_answer = False
+              try:
+                  resp_save = resp
+                  resp = float(resp)
+                  if resp == answer:
+                      print("%s* * * * Correct * * * *%s" % (GREEN, NC))
+                      right = right + 1
+                      break
+                  else:
+                      wrong_answer = True
+              except:
+                  wrong_answer = True
+
+              if wrong_answer == True:
+                  wrong = wrong + 1
+                  print("%s! ! ! ! NOPE ! ! ! !%s" % (RED, NC))
+                  print("%s'%s' is NOT correct%s" % (RED, resp_save, NC))
+                  wrong_list.append("%s : '%s' (You said %s'%s')%s" % (astr, answer, YELLOW, resp_save, NC))
 
       questions_answered = questions_answered + 1
       time.sleep(0.25)

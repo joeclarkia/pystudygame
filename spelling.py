@@ -175,6 +175,7 @@ def main():
               wrong = wrong + 1
               wrong_list.append("%s : '%s' (You said %s'%s'%s)" % (resp, answer, YELLOW, resp, NC))
               print("%s! ! ! ! NOPE ! ! ! !%s" % (RED, NC))
+              print("%s'%s' is NOT correct%s" % (RED, resp, NC))
 
       questions_answered = questions_answered + 1
       time.sleep(0.25)
