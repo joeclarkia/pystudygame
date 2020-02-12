@@ -180,6 +180,9 @@ def main():
               help_list.append("%s : %s" % (resp, answer))
           elif resp == "q":
               quit()
+          elif resp == "":
+              # just ask the question again, don't count it wrong
+              pass
           else:
               wrong = wrong + 1
               wrong_list.append("%s : '%s' (You said %s'%s'%s)" % (resp, answer, YELLOW, resp, NC))

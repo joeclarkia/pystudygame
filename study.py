@@ -140,8 +140,8 @@ def main():
       if len(item) > 1:
           sentence = item[1]
 
-      #joeSay("Spell the word %s" % (answer))
-      joeSay("%s" % (sentence))
+      #joeSay("%s" % (sentence))
+      print("%s%s%s" % (YELLOW, sentence, NC))
 
       while True:    
           print("Elapsed time: %.0f sec" % (time.time() - start_time))
@@ -156,22 +156,25 @@ def main():
               right = right + 1
               break
           elif resp == "h":
-#              print(" . : repeat the word to spell")
+              print(" . : repeat the word to spell")
               print(" s : say the word in a sentence")
               print(" ? : I give up, give me the answer")
               print(" q : quit")
-          elif resp == "s":
-              if sentence:
-                  joeSay(sentence)
-              else:
-                  print("%sNo sentence provided%s" % (YELLOW, NC))
-#          elif resp == ".":
-#              joeSay("Spell the word %s" % (answer))
+          #elif resp == "s":
+          #    if sentence:
+          #        joeSay(sentence)
+          #    else:
+          #        print("%sNo sentence provided%s" % (YELLOW, NC))
+          elif resp == ".":
+               print("%s%s%s" % (YELLOW, sentence, NC))
+               #joeSay("%s" % (sentence))
           elif resp == "?":
               print("%sAnswer: '%s'%s" % (YELLOW, answer, NC))
               help_list.append("%s : %s" % (resp, answer))
           elif resp == "q":
               quit()
+          elif resp == "":
+              pass
           else:
               wrong = wrong + 1
               wrong_list.append("%s : '%s' (You said %s'%s'%s)" % (resp, answer, YELLOW, resp, NC))

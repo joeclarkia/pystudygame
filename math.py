@@ -131,6 +131,8 @@ def main():
               help_list.append("%s : %s" % (astr, answer))
           elif resp == "q":
               quit()
+          elif resp == "":
+              pass
           else:
               wrong_answer = False
               try:
