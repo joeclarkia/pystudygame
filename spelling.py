@@ -149,7 +149,7 @@ def main():
           # it's a vocab word
           query = "Vocabulary time Yippee! Spell the word with this definition: %s" % sentence
 
-      joeSay(query)
+      joeSay("%s, %s" % (query, sentence) )
       
       while True:    
           print("Elapsed time: %.0f sec" % (time.time() - start_time))
