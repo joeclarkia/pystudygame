@@ -147,7 +147,7 @@ def main():
       query = "Spell the word %s" % (answer)
       if len(item) > 2:
           # it's a vocab word
-          query = "Vocabulary time Yippee! Spell the word with this definition: %s" % sentence
+          query = "Vocabulary time Awesome Sauce Yay Happiness! Spell the word with this definition: %s" % sentence
 
       joeSay("%s, %s" % (query, sentence) )
       

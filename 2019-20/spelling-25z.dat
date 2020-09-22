@@ -15,6 +15,6 @@ match,Look for a match.
 qt.,quart
 oz.,ounce
 lb.,pound
-daydream,happy thoughts,vocab
-honesty,telling the truth,vocab
-journey,to travel,vocab
+daydream,happy thoughts (starts with d),vocab
+honesty,telling the truth (starts with h),vocab
+journey,to travel (starts with j),vocab
