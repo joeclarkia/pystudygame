@@ -1,3 +1,3 @@
 #!/bin/bash
 
-wpython spelling.py $1
+wpython spelling_game.py asher-sp-$1.dat
